@@ -95,7 +95,7 @@ volumes:
 
 ```
 ## Nginx custom config:
-### Enable custom nginx config files if they exist
+### Enable custom nginx config files
 > /var/www/html/conf/nginx/nginx.conf
 <br>
 
