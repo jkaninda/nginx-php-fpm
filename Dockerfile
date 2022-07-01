@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y nginx
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions zip, mbstring, exif, bcmath, intl
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-configure gd
 RUN docker-php-ext-install  zip mbstring exif pcntl bcmath -j$(nproc) gd intl
 
 # Install Redis and enable it
