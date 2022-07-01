@@ -125,7 +125,7 @@ if [ -f /var/www/html/conf/nginx/nginx-site.conf ]; then
     }
   # deny access to Apache .htaccess on Nginx with PHP, 
   # if Apache and Nginx document roots concur
-   location ~ /\.ht    {deny all;}
+  location ~ /\.ht    {deny all;}
 	location ~ /\.svn/  {deny all;}
 	location ~ /\.git/  {deny all;}
 	location ~ /\.hg/   {deny all;}
