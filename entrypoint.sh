@@ -128,9 +128,6 @@ if [ -f /var/www/html/conf/nginx/nginx-site.conf ]; then
   location ~ /\.ht {
     deny all;
   }
-  location ~ .*\.(?!htaccess).* {
-    deny all;
-  }
 }
 EOF
 
