@@ -3,7 +3,7 @@ Red='\033[0;31m'          # Red
 Green='\033[0;32m'        # Green
 echo ""
 echo "***********************************************************"
-echo " Starting LARAVEL NGINX PHP-FPM Docker Container                 "
+echo " Starting NGINX PHP-FPM Docker Container                   "
 echo "***********************************************************"
 
 set -e
@@ -12,9 +12,6 @@ set -e
 TASK=/etc/supervisor/conf.d/php-fpm.conf
 touch $TASK
 cat > "$TASK" <<EOF
-[supervisord]
-nodaemon=true
-user=root
 [program:php-fpm]
 command=/usr/local/sbin/php-fpm
 numprocs=1
@@ -81,14 +78,15 @@ fi
 
 if [ -f /var/www/html/conf/nginx/nginx-site.conf ]; then
   echo "Custom nginx site config found"
-  rm /etc/nginx/sites-enabled/default
-  cp /var/www/html/conf/nginx/nginx-site.conf /etc/nginx/sites-enabled/default
+  rm /etc/nginx/sites-available/default
+  cp /var/www/html/conf/nginx/nginx-site.conf /etc/nginx/sites-available/default
+  echo "${Green} Start nginx with custom server config..."
   else
   echo "${Red} nginx-site.conf not found"
   echo "${Green} If you want to use custom configs, create config file in /var/www/html/conf/nginx/nginx-site.conf"
   echo "${Green} Start nginx with default config..."
-   rm -f /etc/nginx/sites-enabled/default
-   TASK=/etc/nginx/sites-enabled/default
+   rm -f /etc/nginx/sites-available/default
+   TASK=/etc/nginx/sites-available/default
    touch $TASK
    cat > "$TASK"  <<EOF
    server {
@@ -123,32 +121,43 @@ if [ -f /var/www/html/conf/nginx/nginx-site.conf ]; then
         try_files \$uri \$uri/ /index.php?\$query_string;
         gzip_static on;
     }
+    location ~ \.css {
+    add_header  Content-Type    text/css;
+    }
+    location ~ \.js {
+    add_header  Content-Type    application/x-javascript;
+    }
   # deny access to Apache .htaccess on Nginx with PHP, 
   # if Apache and Nginx document roots concur
-   location ~ /\.ht    {deny all;}
+  location ~ /\.ht    {deny all;}
 	location ~ /\.svn/  {deny all;}
 	location ~ /\.git/  {deny all;}
 	location ~ /\.hg/   {deny all;}
 	location ~ /\.bzr/  {deny all;}
 }
 EOF
-
-
 fi
-
+## Check if the supervisor config file exists
+if [ -f /var/www/html/conf/worker/supervisor.conf ]; then
+    echo "Custom supervisor config found"
+    cp /var/www/html/conf/worker/supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+    else
+    echo "${Red} Supervisor.conf not found"
+    echo "${Green} If you want to add more supervisor configs, create config file in /var/www/html/conf/worker/supervisor.conf"
+    echo "${Green} Start supervisor with default config..."
+    fi
+## Add nginx process to supervisor
 TASK=/etc/supervisor/conf.d/nginx.conf
 touch $TASK
 cat > "$TASK" <<EOF
-[supervisord]
-nodaemon=true
-user=root
-[program:ginx]
+[program:nginx]
 command=/usr/sbin/nginx -g "daemon off;"
 numprocs=1
 autostart=true
 autorestart=true
 stderr_logfile=/var/log/ngnix.err.log
 stdout_logfile=/var/log/ngnix.out.log
+user=root
 EOF
 
 echo ""

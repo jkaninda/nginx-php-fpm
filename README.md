@@ -34,9 +34,9 @@
 ```yml
 version: '3'
 services:
-    php-fpm:
+    app:
         image: jkaninda/nginx-php-fpm:latest
-        container_name: php-fpm
+        container_name: my-app
         restart: unless-stopped      
         volumes:
         #Project root
@@ -48,9 +48,9 @@ services:
 
 ```
 ## Laravel `artisan` command usage:
-### Open php-fpm
+### CLI
 ```sh
-docker-compose exec php-fpm /bin/bash
+docker-compose exec app bash
 
 ```
 
@@ -65,9 +65,9 @@ php atisan  migrate
 ```yml
 version: '3'
 services:
-    php-fpm:
+    app:
         image: jkaninda/nginx-php-fpm
-        container_name: php-fpm
+        container_name: my-app
         working_dir: /var/www/html #Optional, If you want to use  a custom directory
         restart: unless-stopped 
         ports:
@@ -76,15 +76,13 @@ services:
         #Project root
             - ./:/var/www/html
             - ~/.ssh:/root/.ssh # If you use private CVS
-            - ./supervisord:/etc/supervisor/conf.d/ # Supervisor directory, if you want to add more supervisor process config file
-            - ./php.ini:/usr/local/etc/php/conf.d/php.ini # Optional, your custom php init file
+            - #./php.ini:/usr/local/etc/php/conf.d/php.ini # Optional, your custom php init file
             -  storage-data:/var/www/html/storage/app #Optional, your custom storage data
         environment:
            - APP_ENV=development # Optional, or production
-           - WORKDIR=/var/www/html #Optional, If you want to use  a custom directory
            - LARAVEL_PROCS_NUMBER=3 # Optional, Laravel queue:work process number
-           - CLIENT_MAX_BODY_SIZE=20M
-           - DOMAIN=example.com 
+           - CLIENT_MAX_BODY_SIZE=20M # Optional
+           - DOMAIN=example.com # Optional
 volumes:
  storage-data: 
 ```
@@ -97,9 +95,12 @@ volumes:
 ## Nginx custom config:
 ### Enable custom nginx config files
 > /var/www/html/conf/nginx/nginx.conf
-<br>
 
 > /var/www/html/conf/nginx/nginx-site.conf
+
+## Supervisord
+### Add more supervisor process in
+> /var/www/html/conf/worker/supervisor.conf
 
 
 > P.S. please give a star if you like it :wink:
