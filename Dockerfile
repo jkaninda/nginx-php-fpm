@@ -1,8 +1,7 @@
-FROM php:8.1-fpm
-ENV WORKDIR=/var/www/html
-ENV STORAGE_DIR=${WORKDIR}/storage
+FROM php:8.1.7-fpm
+ARG WORKDIR=/var/www/html
 ENV DOCUMENT_ROOT=${WORKDIR}
-ENV LARAVEL_PROCS_NUMBER=2
+ENV LARAVEL_PROCS_NUMBER=1
 ENV DOMAIN=_
 ENV CLIENT_MAX_BODY_SIZE=15M
 # Install system dependencies
@@ -71,13 +70,13 @@ RUN composer global require "laravel/envoy=~1.0"
 # Set working directory
 WORKDIR $WORKDIR
 
-# nginx site conf
 RUN rm -Rf /var/www/* && \
-mkdir /var/www/html/
+mkdir -p /var/www/html
 
 ADD src/index.php $WORKDIR/index.php
 ADD src/conf/nginx/default.conf /etc/nginx/sites-available/default
 ADD src/php.ini $PHP_INI_DIR/conf.d/
+ADD src/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
 COPY ./entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -93,4 +92,6 @@ RUN groupmod -g 1000 www-data
 RUN chmod -R 755 $WORKDIR
 RUN chown -R www-data:www-data $WORKDIR
 EXPOSE 9000
+EXPOSE 80
 CMD [ "entrypoint" ]
+

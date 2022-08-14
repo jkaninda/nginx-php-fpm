@@ -50,13 +50,11 @@ services:
 ## Laravel `artisan` command usage:
 ### CLI
 ```sh
-docker-compose exec app bash
+docker-compose exec  app bash
 
 ```
-
-### Laravel migration
 ```sh
-php atisan  migrate
+docker exec -it app bash
 
 ```
 
@@ -67,8 +65,7 @@ version: '3'
 services:
     app:
         image: jkaninda/nginx-php-fpm
-        container_name: my-app
-        working_dir: /var/www/html #Optional, If you want to use  a custom directory
+        container_name: nginx-fpm
         restart: unless-stopped 
         ports:
            - "80:80"    
@@ -76,15 +73,14 @@ services:
         #Project root
             - ./:/var/www/html
             - ~/.ssh:/root/.ssh # If you use private CVS
-            - #./php.ini:/usr/local/etc/php/conf.d/php.ini # Optional, your custom php init file
-            -  storage-data:/var/www/html/storage/app #Optional, your custom storage data
+             #./php.ini:/usr/local/etc/php/conf.d/php.ini # Optional, your custom php init file
         environment:
            - APP_ENV=development # Optional, or production
-           - LARAVEL_PROCS_NUMBER=3 # Optional, Laravel queue:work process number
-           - CLIENT_MAX_BODY_SIZE=20M # Optional
-           - DOMAIN=example.com # Optional
-volumes:
- storage-data: 
+           - LARAVEL_PROCS_NUMBER=2 # Optional, Laravel queue:work process number
+           #- CLIENT_MAX_BODY_SIZE=20M # Optional
+           #- DOMAIN=example.com # Optional
+           #- DOCUMENT_ROOT=/var/www/html Optional
+ 
 ```
 
 ## Docker run
