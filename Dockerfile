@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.1.7-fpm
 ENV WORKDIR=/var/www/html
 ENV STORAGE_DIR=${WORKDIR}/storage
 ENV DOCUMENT_ROOT=${WORKDIR}
