@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM php:8.0-fpm
 ARG WORKDIR=/var/www/html
 ENV DOCUMENT_ROOT=${WORKDIR}
 ENV LARAVEL_PROCS_NUMBER=1
@@ -29,9 +29,21 @@ RUN apt-get update && apt-get install -y nginx
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# Install Kafka 
+RUN git clone https://github.com/arnaud-lb/php-rdkafka.git\
+    && cd php-rdkafka \
+    && phpize \
+    && ./configure \
+    && make all -j 5 \
+    && make install 
+
+# Install Rdkafka and enable it
+RUN docker-php-ext-enable rdkafka \
+     && cd .. \
+    && rm -rf /php-rdkafka
 
 # Install PHP extensions zip, mbstring, exif, bcmath, intl
-RUN docker-php-ext-configure gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install  zip mbstring exif pcntl bcmath -j$(nproc) gd intl
 
 # Install Redis and enable it
