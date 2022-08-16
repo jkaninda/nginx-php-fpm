@@ -79,6 +79,6 @@ RUN groupmod -g 1000 www-data
 
 RUN chmod -R 755 $WORKDIR
 RUN chown -R www-data:www-data $WORKDIR
-EXPOSE 80
+EXPOSE 9000 80
 CMD [ "entrypoint" ]
 
