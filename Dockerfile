@@ -4,6 +4,7 @@ ENV DOCUMENT_ROOT=${WORKDIR}
 ENV LARAVEL_PROCS_NUMBER=1
 ENV DOMAIN=_
 ENV CLIENT_MAX_BODY_SIZE=15M
+ENV NODE_VERSION=16.x
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -24,6 +25,10 @@ RUN apt-get update && apt-get install -y \
     sqlite3  \
     nano \
     cron
+
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
+ # Install Node    
+RUN apt-get install -y nodejs     
 # Install nginx 
 RUN apt-get update && apt-get install -y nginx
 
