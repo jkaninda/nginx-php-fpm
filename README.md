@@ -8,6 +8,7 @@
 > 🐳 Full Docker image for Nginx PHP-FPM container created to run Laravel or any php based applications.
 
 - [Docker Hub](https://hub.docker.com/r/jkaninda/nginx-php-fpm)
+- [Github](https://github.com/jkaninda/nginx-php-fpm)
 
 ## Specifications:
 
@@ -81,7 +82,7 @@ services:
            - LARAVEL_PROCS_NUMBER=2 # Optional, Laravel queue:work process number
            #- CLIENT_MAX_BODY_SIZE=20M # Optional
            #- DOMAIN=example.com # Optional
-           #- DOCUMENT_ROOT=/var/www/html Optional
+           - DOCUMENT_ROOT=/var/www/html #Optional
  
 ```
 
@@ -100,6 +101,11 @@ services:
 ### Add more supervisor process in
 > /var/www/html/conf/worker/supervisor.conf
 
+### Storage permision issue
+> docker-compose exec php-fpm /bin/bash 
+
+> chown -R www-data:www-data /var/www/html/storage
+> chmod -R 775 /var/www/html/storage
 
 > P.S. please give a star if you like it :wink:
 
