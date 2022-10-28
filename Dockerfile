@@ -69,9 +69,6 @@ RUN docker-php-ext-install pdo_pgsql
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install Laravel Envoy
-RUN composer global require "laravel/envoy=~1.0"
-
 # Set working directory
 WORKDIR $WORKDIR
 
