@@ -1,10 +1,10 @@
-FROM php:8.1.10-fpm
+FROM php:8.2.0RC5-fpm
 ARG WORKDIR=/var/www/html
 ENV DOCUMENT_ROOT=${WORKDIR}
 ENV LARAVEL_PROCS_NUMBER=1
 ENV DOMAIN=_
 ENV CLIENT_MAX_BODY_SIZE=15M
-ENV NODE_VERSION=16.x
+ENV NODE_VERSION=17.x
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -26,9 +26,9 @@ RUN apt-get update && apt-get install -y \
     nano \
     cron
 
-RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
+#RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
  # Install Node    
-RUN apt-get install -y nodejs     
+#RUN apt-get install -y nodejs     
 # Install nginx 
 RUN apt-get update && apt-get install -y nginx
 
@@ -66,8 +66,8 @@ RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install pdo_pgsql
 
 
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install Laravel Envoy
 RUN composer global require "laravel/envoy=~1.0"
