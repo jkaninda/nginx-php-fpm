@@ -1,4 +1,4 @@
-FROM php:8.1.10-fpm
+FROM php:8.1-fpm
 ARG WORKDIR=/var/www/html
 ENV DOCUMENT_ROOT=${WORKDIR}
 ENV LARAVEL_PROCS_NUMBER=1
@@ -26,9 +26,9 @@ RUN apt-get update && apt-get install -y \
     nano \
     cron
 
-#RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
  # Install Node    
-#RUN apt-get install -y nodejs     
+RUN apt-get install -y nodejs     
 # Install nginx 
 RUN apt-get update && apt-get install -y nginx
 
