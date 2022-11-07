@@ -26,9 +26,9 @@ RUN apt-get update && apt-get install -y \
     nano \
     cron
 
-#RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
  # Install Node    
-#RUN apt-get install -y nodejs     
+RUN apt-get install -y nodejs     
 # Install nginx 
 RUN apt-get update && apt-get install -y nginx
 
