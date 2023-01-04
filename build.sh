@@ -1,9 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/bash
 if [ $# -eq 0 ]
   then
     tag='latest'
   else
     tag=$1
 fi
-
-docker build -t jkaninda/nginx-php-fpm:$tag .
+if [ $tag != 'latest' ]
+then
+  echo 'Build from tag'
+  docker build -f docker/${tag}/Dockerfile -t jkaninda/nginx-php-fpm:$tag .
+else
+ echo 'Build latest'
+ docker build -f docker/8.2/Dockerfile -t jkaninda/nginx-php-fpm:$tag .
+ 
+fi
