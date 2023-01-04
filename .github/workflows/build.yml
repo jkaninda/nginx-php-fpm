@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - develop
+      - main
 
 env:
   BUILDKIT_IMAGE: jkaninda/nginx-php-fpm
