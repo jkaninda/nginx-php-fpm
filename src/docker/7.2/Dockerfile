@@ -1,4 +1,4 @@
-FROM php:7.3-fpm
+FROM php:7.2-fpm
 ARG WORKDIR=/var/www/html
 ENV DOCUMENT_ROOT=${WORKDIR}
 ENV LARAVEL_PROCS_NUMBER=1
@@ -70,7 +70,7 @@ ADD src/conf/nginx/default.conf /etc/nginx/sites-available/default
 ADD src/php.ini $PHP_INI_DIR/conf.d/
 ADD src/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
-COPY ./entrypoint.sh /usr/local/bin/
+COPY src/entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN ln -s /usr/local/bin/entrypoint.sh /
 

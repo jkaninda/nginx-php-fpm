@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:8.1.13-fpm
 ARG WORKDIR=/var/www/html
 ENV DOCUMENT_ROOT=${WORKDIR}
 ENV LARAVEL_PROCS_NUMBER=1
@@ -28,7 +28,7 @@ RUN apt-get update && apt-get install -y \
     nano \
     cron
 
-RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION} | bash -
  # Install Node    
 RUN apt-get install -y nodejs     
 # Install nginx 
@@ -82,7 +82,7 @@ ADD src/conf/nginx/default.conf /etc/nginx/sites-available/default
 ADD src/php.ini $PHP_INI_DIR/conf.d/
 ADD src/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
 
-COPY ./entrypoint.sh /usr/local/bin/
+COPY src/entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN ln -s /usr/local/bin/entrypoint.sh /
 
@@ -95,5 +95,6 @@ RUN groupmod -g ${HOST_UID} www-data
 
 RUN chmod -R 755 $WORKDIR
 RUN chown -R www-data:www-data $WORKDIR
-EXPOSE 9000 80
+EXPOSE 80
 CMD [ "entrypoint" ]
+
