@@ -83,6 +83,11 @@ services:
            - DOCUMENT_ROOT=/var/www/html #Optional
  
 ```
+Default web root:
+```
+/var/www/html
+```
+
 
 ## Docker run
 ```sh
