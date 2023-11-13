@@ -36,7 +36,7 @@
 version: '3'
 services:
     app:
-        image: jkaninda/nginx-php-fpm:latest
+        image: jkaninda/nginx-php-fpm:8.2
         container_name: my-app
         restart: unless-stopped      
         volumes:
@@ -124,6 +124,22 @@ RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
 ## Supervisord
 ### Add more supervisor process in
 > /var/www/html/conf/worker/supervisor.conf
+
+In case you want to execute and maintain a task or process with supervisor.
+
+Find below an example with Apache Kafka, when you want to maintain a consumer process.
+### Example:
+```conf
+[program:kafkaconsume-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/html/artisan kafka:consumer
+autostart=true
+autorestart=true
+numprocs=1
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/www/html/storage/logs/kafka.log
+```
 
 ### Storage permision issue
 > docker-compose exec php-fpm /bin/bash 
