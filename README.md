@@ -11,7 +11,7 @@
 
 ## Specifications:
 
-* PHP 8.2 / 8.1 / 8.0 / 7.4 / 7.2
+* PHP 8.3 / 8.2 / 8.1 / 8.0 / 7.4 / 7.2
 * Composer
 * OpenSSL PHP Extension
 * XML PHP Extension
