@@ -3,11 +3,6 @@ on:
   push:
 jobs:
   integration:
-    services:
-     nginx-php-fpm: 
-        image: jkaninda/nginx-php-fpm:latest
-        ports:
-          - "80:80"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,8 +11,10 @@ jobs:
          composer create-project laravel/laravel laravel
       - name: Fix Permission
         run: chmod -R 777 ./laravel/storage
-      #- name: Run docker-compose
-       # run: docker-compose up -d
+      - name: Run docker-compose
+        run: 
+          cp ./tests/compose.yaml compose.yaml &&
+          docker-compose -f "compose.yaml" up -d
       - name: Create script.js for K6 test
         run: |
           touch script.js && cat > script.js <<EOF
@@ -26,13 +23,15 @@ jobs:
       
           export default function () {
             //Link
-            http.get('http://nginx-php-fpm');
+            http.get('http://localhost');
           }
           EOF
-      - name: Run k6 local test
-        uses: grafana/k6-action@v0.3.1
-        with:
-           filename: script.js
+      - name: Install k6
+        run: |
+            curl https://github.com/grafana/k6/releases/download/v0.47.0/k6-v0.47.0-linux-amd64.tar.gz -L | tar xvz --strip-components 1
+      - name: Test with K6
+        run: |
+           ./k6 run script.js
       - name: Test with curl
         run: |
             curl -i http://localhost
