@@ -10,9 +10,16 @@
 - [Docker Hub](https://hub.docker.com/r/jkaninda/nginx-php-fpm)
 - [Github](https://github.com/jkaninda/nginx-php-fpm)
 
+## PHP Versions:
+- 8.3
+- 8.2
+- 8.1
+- 8.0
+- 7.4
+- 7.2
+
 ## Specifications:
 
-* PHP 8.3 / 8.2 / 8.1 / 8.0 / 7.4 / 7.2
 * Composer
 * OpenSSL PHP Extension
 * XML PHP Extension
@@ -98,7 +105,7 @@ Default web root:
 ## Build from base
 Dockerfile
 ```Dockerfile
-FROM jkaninda/nginx-php-fpm:8.1
+FROM jkaninda/nginx-php-fpm:8.3
 # Copy laravel project files
 COPY . /var/www/html
 # Storage Volume
@@ -106,13 +113,12 @@ VOLUME /var/www/html/storage
 
 WORKDIR /var/www/html
 
-# Custom cache invalidation
-ARG CACHEBUST=1
-RUN composer install
-
-RUN chown -R www-data:www-data /var/www/html/storage
-RUN chown -R www-data:www-data /var/www/html/bootstrap/cache
-
+# Custom cache invalidation / optional
+#ARG CACHEBUST=1
+# Run composer install / Optional
+#RUN composer install
+# Fix permissions
+RUN chown -R www-data:www-data /var/www/html
 ```
 
 
@@ -143,12 +149,13 @@ stdout_logfile=/var/www/html/storage/logs/kafka.log
 ```
 
 ### Storage permision issue
-> docker-compose exec php-fpm /bin/bash 
-
-> chown -R www-data:www-data /var/www/html/storage
+```sh
+ docker-compose exec php-fpm /bin/bash 
+ ```
+```sh
+chown -R www-data:www-data /var/www/html/
+```
 
 > chmod -R 775 /var/www/html/storage
 
 > P.S. please give a star if you like it :wink:
-
-
