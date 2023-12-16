@@ -10,9 +10,16 @@
 - [Docker Hub](https://hub.docker.com/r/jkaninda/nginx-php-fpm)
 - [Github](https://github.com/jkaninda/nginx-php-fpm)
 
+## PHP Version:
+- 8.3
+- 8.2
+- 8.1
+- 8.0
+- 7.4
+- 7.2
+
 ## Specifications:
 
-* PHP 8.3 / 8.2 / 8.1 / 8.0 / 7.4 / 7.2
 * Composer
 * OpenSSL PHP Extension
 * XML PHP Extension
