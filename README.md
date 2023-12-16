@@ -10,7 +10,7 @@
 - [Docker Hub](https://hub.docker.com/r/jkaninda/nginx-php-fpm)
 - [Github](https://github.com/jkaninda/nginx-php-fpm)
 
-## PHP Version:
+## PHP Versions:
 - 8.3
 - 8.2
 - 8.1
