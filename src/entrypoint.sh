@@ -1,32 +1,41 @@
 #!/bin/sh
-Red='\033[0;31m'          # Red
-Green='\033[0;32m'        # Green
+
 echo ""
 echo "***********************************************************"
 echo " Starting NGINX PHP-FPM Docker Container                   "
 echo "***********************************************************"
 
 set -e
-
+set -e
+info() {
+    { set +x; } 2> /dev/null
+    echo '[INFO] ' "$@"
+}
+warning() {
+    { set +x; } 2> /dev/null
+    echo '[WARNING] ' "$@"
+}
+fatal() {
+    { set +x; } 2> /dev/null
+    echo '[ERROR] ' "$@" >&2
+    exit 1
+}
 ## Check if the artisan file exists
 if [ -f /var/www/html/artisan ]; then
-    echo "${Green} artisan file found, creating laravel supervisor config"
+    info "Artisan file found, creating laravel supervisor config"
     # Set DocumentRoot to the Laravel project directory
     export DOCUMENT_ROOT=/var/www/html/public
     ##Create Laravel Scheduler process
     TASK=/etc/supervisor/conf.d/laravel-worker.conf
     touch $TASK
     cat > "$TASK" <<EOF
-    [supervisord]
-    nodaemon=true
-    user=root
     [program:Laravel-scheduler]
     process_name=%(program_name)s_%(process_num)02d
     command=/bin/sh -c "while [ true ]; do (php /var/www/html/artisan schedule:run --verbose --no-interaction &); sleep 60; done"
     autostart=true
     autorestart=true
     numprocs=1
-    user=www-data
+    user=$USER_NAME
     stdout_logfile=/var/log/laravel_scheduler.out.log
     redirect_stderr=true
     
@@ -36,30 +45,30 @@ if [ -f /var/www/html/artisan ]; then
     autostart=true
     autorestart=true
     numprocs=$LARAVEL_PROCS_NUMBER
-    user=www-data
+    user=$USER_NAME
     redirect_stderr=true
     stdout_logfile=/var/log/laravel_worker.log
 EOF
-echo  "${Green} Laravel supervisor config created"
+  info  "Laravel supervisor config created"
 else
-    echo  "${Red} artisan file not found"
+    info  "artisan file not found"
 fi
 
 # Enable custom nginx config files if they exist
 if [ -f /var/www/html/conf/nginx/nginx.conf ]; then
   cp /var/www/html/conf/nginx/nginx.conf /etc/nginx/nginx.conf
-  echo "Using custom nginx.conf"
+  info "Using custom nginx.conf"
 fi
 
 if [ -f /var/www/html/conf/nginx/nginx-site.conf ]; then
-  echo "Custom nginx site config found"
+  info "Custom nginx site config found"
   rm /etc/nginx/sites-available/default
   cp /var/www/html/conf/nginx/nginx-site.conf /etc/nginx/sites-available/default
-  echo "${Green} Start nginx with custom server config..."
+  info "Start nginx with custom server config..."
   else
-  echo "${Red} nginx-site.conf not found"
-  echo "${Green} If you want to use custom configs, create config file in /var/www/html/conf/nginx/nginx-site.conf"
-  echo "${Green} Start nginx with default config..."
+  info "Nginx-site.conf not found"
+  info "If you want to use custom configs, create config file in /var/www/html/conf/nginx/nginx-site.conf"
+  info "Start nginx with default config..."
    rm -f /etc/nginx/sites-available/default
    TASK=/etc/nginx/sites-available/default
    touch $TASK
@@ -115,19 +124,13 @@ EOF
 fi
 ## Check if the supervisor config file exists
 if [ -f /var/www/html/conf/worker/supervisor.conf ]; then
-    echo "Custom supervisor config found"
+    info "Custom supervisor config found"
     cp /var/www/html/conf/worker/supervisor.conf /etc/supervisor/conf.d/supervisor.conf
     else
-    echo "${Red} Supervisor.conf not found"
-    echo "${Green} If you want to add more supervisor configs, create config file in /var/www/html/conf/worker/supervisor.conf"
-    echo "${Green} Start supervisor with default config..."
+    info "Supervisor.conf not found"
+    info "If you want to add more supervisor configs, create config file in /var/www/html/conf/worker/supervisor.conf"
+    info "Start supervisor with default config..."
     fi
 
-
-
-echo ""
-echo "**********************************"
-echo "     Starting Supervisord...     "
-echo "***********************************"
 supervisord -c /etc/supervisor/supervisord.conf
 
