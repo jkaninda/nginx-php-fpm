@@ -133,7 +133,7 @@ USER www-data
 
 ## Supervisord
 ### Add more supervisor process in
-> /var/www/html/conf/worker/supervisor.conf
+> /etc/supervisor/conf.d/
 
 In case you want to execute and maintain a task or process with supervisor.
 
