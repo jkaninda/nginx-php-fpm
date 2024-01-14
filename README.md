@@ -46,7 +46,8 @@ services:
     app:
         image: jkaninda/nginx-php-fpm:8.2
         container_name: my-app
-        restart: unless-stopped      
+        restart: unless-stopped 
+        user: www-data # Optional - for production usage    
         volumes:
         #Project root
             - ./:/var/www/html
@@ -115,10 +116,12 @@ WORKDIR /var/www/html
 
 # Custom cache invalidation / optional
 #ARG CACHEBUST=1
-# Run composer install / Optional
+# composer install / Optional
 #RUN composer install
 # Fix permissions
 RUN chown -R www-data:www-data /var/www/html
+
+USER www-data
 ```
 
 
