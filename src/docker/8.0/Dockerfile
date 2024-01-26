@@ -114,6 +114,7 @@ RUN chown -R ${USER_NAME}:${GROUP_NAME} /var/www && \
   chown -R $USER_NAME:$USER_NAME /var/lib/nginx/ && \
   chown -R $USER_NAME:$USER_NAME /var/run/nginx.pid && \
   chown -R $USER_NAME:$USER_NAME /var/log/supervisor && \
+  chown -R $USER_NAME:$USER_NAME /etc/nginx/nginx.conf && \
   chown -R $USER_NAME:$USER_NAME /etc/nginx/conf.d/ && \
   chown -R ${USER_NAME}:${GROUP_NAME} /tmp
 

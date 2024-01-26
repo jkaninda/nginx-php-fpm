@@ -54,6 +54,21 @@ else
     info  "artisan file not found"
 fi
 
+# Enable custom nginx config files if they exist
+if [ -f /var/www/html/conf/nginx/nginx.conf ]; then
+  cp /var/www/html/conf/nginx/nginx.conf /etc/nginx/nginx.conf
+  info "Using custom nginx.conf"
+fi
+
+if [ -f /var/www/html/conf/nginx/nginx-site.conf ]; then
+  info "Custom nginx site config found"
+  rm /etc/nginx/conf.d/default.conf
+  cp /var/www/html/conf/nginx/nginx-site.conf /etc/nginx/conf.d/default.conf
+  info "Start nginx with custom server config..."
+  else
+  info "nginx-site.conf not found"
+  info "If you want to use custom configs, create config file in /var/www/html/conf/nginx/nginx-site.conf"
+  info "Start nginx with default config..."
    rm -f /etc/nginx/conf.d/default.conf
    TASK=/etc/nginx/conf.d/default.conf
    touch $TASK
@@ -106,6 +121,12 @@ fi
 	location ~ /\.bzr/  {deny all;}
 }
 EOF
-
+fi
+## Check if the supervisor config file exists
+if [ -f /var/www/html/conf/worker/supervisor.conf ]; then
+    info "Custom supervisor config found"
+    cp /var/www/html/conf/worker/supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+fi
+## Start Supervisord
 supervisord -c /etc/supervisor/supervisord.conf
 
