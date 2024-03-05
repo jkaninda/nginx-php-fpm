@@ -14,3 +14,4 @@ else
  docker build -f src/docker/8.3/Dockerfile -t jkaninda/nginx-php-fpm:$tag .
  
 fi
+docker compose up -d --force-recreate
