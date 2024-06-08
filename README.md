@@ -1,5 +1,5 @@
 [![Build](https://github.com/jkaninda/nginx-php-fpm/actions/workflows/build.yml/badge.svg)](https://github.com/jkaninda/nginx-php-fpm/actions/workflows/build.yml)
-[![Integration Test](https://github.com/jkaninda/nginx-php-fpm/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/jkaninda/nginx-php-fpm/actions/workflows/integration-tests.yml)
+[![Integration Testing](https://github.com/jkaninda/nginx-php-fpm/actions/workflows/integration-tests.yml/badge.svg)](https://github.com/jkaninda/nginx-php-fpm/actions/workflows/integration-tests.yml)
 ![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/jkaninda/nginx-php-fpm?style=flat-square)
 ![Docker Pulls](https://img.shields.io/docker/pulls/jkaninda/nginx-php-fpm?style=flat-square)
 
@@ -44,7 +44,7 @@
 version: '3'
 services:
     app:
-        image: jkaninda/nginx-php-fpm:8.2
+        image: jkaninda/nginx-php-fpm:8.3
         container_name: my-app
         restart: unless-stopped 
         user: www-data # Optional - for production usage    
