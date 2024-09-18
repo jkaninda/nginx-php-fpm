@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.4-rc-fpm
 ARG WORKDIR=/var/www/html
 ENV DOCUMENT_ROOT=${WORKDIR}
 ENV LARAVEL_PROCS_NUMBER=1
@@ -90,6 +90,7 @@ COPY src/entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN ln -s /usr/local/bin/entrypoint.sh /
 
+
 RUN rm -rf /etc/nginx/conf.d/default.conf
 RUN rm -rf /etc/nginx/sites-enabled/default
 RUN rm -rf /etc/nginx/sites-available/default
@@ -113,9 +114,9 @@ RUN chown -R ${USER_NAME}:${GROUP_NAME} /var/www && \
   touch /var/run/nginx.pid && \
   chown -R $USER_NAME:$USER_NAME /var/cache/nginx && \
   chown -R $USER_NAME:$USER_NAME /var/lib/nginx/ && \
-  chown -R $USER_NAME:$USER_NAME /etc/nginx/nginx.conf && \
   chown -R $USER_NAME:$USER_NAME /var/run/nginx.pid && \
   chown -R $USER_NAME:$USER_NAME /var/log/supervisor && \
+  chown -R $USER_NAME:$USER_NAME /etc/nginx/nginx.conf && \
   chown -R $USER_NAME:$USER_NAME /etc/nginx/conf.d/ && \
   chown -R ${USER_NAME}:${GROUP_NAME} /tmp
 
@@ -123,3 +124,4 @@ RUN chown -R ${USER_NAME}:${GROUP_NAME} /var/www && \
 #USER ${USER_NAME}
 EXPOSE 80
 ENTRYPOINT ["entrypoint.sh"]
+

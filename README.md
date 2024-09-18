@@ -41,28 +41,47 @@
 ## Simple docker-compose usage:
 
 ```yml
-version: '3'
 services:
     app:
         image: jkaninda/nginx-php-fpm:8.3
-        container_name: my-app
+        container_name: app
         restart: unless-stopped 
         user: www-data # Optional - for production usage    
         volumes:
         #Project root
-            - ./:/var/www/html
+            - ./src:/var/www/html
         ports:
            - "80:80"
         networks:
             - default #if you're using networks between containers
 
 ```
-## Laravel `artisan` command usage:
-### CLI
+## Docker:
+### Run
 ```sh
-docker-compose exec  app bash
-
+ docker compose up -d
 ```
+### Create Laravel project
+```sh
+docker compose exec app composer create-project --prefer-dist laravel/laravel .
+```
+### Artisan generate key
+```sh
+docker compose exec app php artisan key:generate
+```
+### Storage link
+```sh
+docker compose exec app php artisan storage:link
+```
+### Fix permissions
+```sh
+docker compose exec app chmod -R 777 storage bootstrap/cache
+```
+### Laravel migration
+```sh
+ docker compose exec app php artisan migrate
+```
+### 
 ```sh
 docker exec -it app bash
 
@@ -75,7 +94,7 @@ version: '3'
 services:
     app:
         image: jkaninda/nginx-php-fpm
-        container_name: nginx-fpm
+        container_name: app
         restart: unless-stopped 
         ports:
            - "80:80"    
@@ -100,7 +119,7 @@ Default web root:
 
 ## Docker run
 ```sh
- docker-compose up -d
+ docker compose up -d
 
 ```
 ## Build from base
@@ -153,7 +172,7 @@ stdout_logfile=/var/www/html/storage/logs/kafka.log
 
 ### Storage permision issue
 ```sh
- docker-compose exec php-fpm /bin/bash 
+ docker compose exec php-fpm /bin/bash 
  ```
 ```sh
 chown -R www-data:www-data /var/www/html/
