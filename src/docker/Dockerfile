@@ -1,4 +1,4 @@
-ARG phpVersion=8.3
+ARG phpVersion=8.3-dev
 FROM php:${phpVersion}-fpm
 ARG WORKDIR=/var/www/html
 ENV DOCUMENT_ROOT=${WORKDIR}

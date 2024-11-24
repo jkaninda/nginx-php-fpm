@@ -18,4 +18,4 @@ build-83:
 	 docker build --build-arg phpVersion=8.3 -f src/docker/Dockerfile -t ${IMAGE_NAME}:8.3 .
 .PHONY: build-84
 build-84:
-	 docker build --build-arg phpVersion=8.4.0RC4 -f src/docker/Dockerfile -t ${IMAGE_NAME}:8.4 .
+	 docker build --build-arg phpVersion=8.4 -f src/docker/Dockerfile -t ${IMAGE_NAME}:8.4 .
