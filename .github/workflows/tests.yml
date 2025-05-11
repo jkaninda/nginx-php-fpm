@@ -9,7 +9,7 @@ jobs:
           # Build the Docker image
       - name: Build Docker Image
         run: |
-            docker buildx build --build-arg phpVersion=8.4 -t ${{ vars.BUILDKIT_IMAGE }}:latest --load .
+            docker buildx build -f src/docker/Dockerfile --build-arg phpVersion=8.4 -t ${{ vars.BUILDKIT_IMAGE }}:latest --load .
       - name: Verify Docker images
         run: |
             docker images
