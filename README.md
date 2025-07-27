@@ -210,6 +210,31 @@ chmod -R 775 /var/www/html/storage
 
 ---
 
-## **Star the Project**  
+### Explore Another Project: Goma Gateway
 
-If you find this project useful, please give it a ⭐️ on GitHub to show your support! 😊  
+Are you building a microservices architecture?
+Do you need a powerful yet lightweight API Gateway or a high-performance reverse proxy to secure and manage your services effortlessly?
+
+Check out my other project — **[Goma Gateway](https://github.com/jkaninda/goma-gateway)**.
+
+**Goma Gateway** is a high-performance, declarative API Gateway built for modern microservices. It comes with a rich set of built-in middleware, including:
+
+* Basic, JWT, OAuth2, LDAP, and ForwardAuth authentication
+* Caching and rate limiting
+* Bot detection
+* Built-in load balancing
+* Simple configuration with minimal overhead
+* ...and more!
+
+**Protocol support:** REST, GraphQL, gRPC, TCP, and UDP
+
+**Security:** Automatic HTTPS via Let’s Encrypt or use your own TLS certificates
+
+Whether you're managing internal APIs or exposing public endpoints, **Goma Gateway** helps you do it efficiently, securely, and with minimal complexity.
+
+---
+
+## ⭐️ **Support the Project**  
+If this project helped you, do not skip on giving it a star. Thanks!
+
+
