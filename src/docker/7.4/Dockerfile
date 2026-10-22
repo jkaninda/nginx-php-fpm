@@ -1,7 +1,19 @@
 FROM php:7.4-fpm
 ARG WORKDIR=/var/www/html
-ENV DOCUMENT_ROOT=${WORKDIR}
 ENV LARAVEL_PROCS_NUMBER=1
+ENV APP_DIR=/var/www/html \
+    PHP_DATE_TIMEZONE=UTC \
+    PHP_DISPLAY_ERRORS=Off \
+    PHP_MEMORY_LIMIT=256M \
+    PHP_UPLOAD_MAX_FILESIZE=80M \
+    PHP_POST_MAX_SIZE=80M \
+    PHP_MAX_EXECUTION_TIME=30 \
+    PHP_OPCACHE_ENABLE=1 \
+    PHP_OPCACHE_ENABLE_CLI=0 \
+    PHP_OPCACHE_MEMORY_CONSUMPTION=512 \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES=50000 \
+    PHP_OPCACHE_VALIDATE_TIMESTAMPS=0 \
+    PHP_OPCACHE_REVALIDATE_FREQ=0
 ENV DOMAIN=_
 ENV CLIENT_MAX_BODY_SIZE=15M
 ENV NODE_VERSION=17.x
@@ -84,7 +96,6 @@ RUN rm -rf /etc/nginx/sites-available/default
 RUN rm -rf /etc/nginx/nginx.conf
 
 COPY src/nginx.conf /etc/nginx/nginx.conf
-COPY src/default.conf /etc/nginx/conf.d/
 
 RUN usermod -u ${USER_ID} ${USER_NAME}
 RUN groupmod -g ${USER_ID} ${GROUP_NAME}
