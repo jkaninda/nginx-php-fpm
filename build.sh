@@ -1,17 +1,17 @@
 #!/bin/bash
-if [ $# -eq 0 ]
-  then
-    tag='latest'
-  else
-    tag=$1
-fi
-if [ $tag != 'latest' ]
-then
-  echo 'Build from tag'
-  docker build -f src/docker/${tag}/Dockerfile -t jkaninda/nginx-php-fpm:$tag .
+# Usage: ./build.sh [php-version] (default: 8.5)
+#        ./build.sh 8.4-alpine
+set -e
+tag=${1:-8.5}
+version=${tag%-alpine}
+
+if [ -f "src/docker/${version}/Dockerfile" ]; then
+  echo "Build legacy image ${tag}"
+  docker build -f "src/docker/${version}/Dockerfile" -t "jkaninda/nginx-php-fpm:${tag}" .
+elif [ "${tag}" != "${version}" ]; then
+  echo "Build ${tag}"
+  docker build --build-arg phpVersion="${version}" -f src/docker/Dockerfile.alpine -t "jkaninda/nginx-php-fpm:${tag}" .
 else
- echo 'Build latest'
- docker build -f src/docker/8.3/Dockerfile -t jkaninda/nginx-php-fpm:$tag .
- 
+  echo "Build ${tag}"
+  docker build --build-arg phpVersion="${version}" -f src/docker/Dockerfile -t "jkaninda/nginx-php-fpm:${tag}" .
 fi
-docker compose up -d --force-recreate
